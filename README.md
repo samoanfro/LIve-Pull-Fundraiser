@@ -1,6 +1,6 @@
 # Live Pull Fundraising Platform
 
-**Status: Pre-Phase 0 (planning stage).** No application code exists yet. This repository currently holds the product/technical specification and the initial technical assessment. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any implementation work begins.
+**Status: Phase 0 (foundation) in progress.** The Next.js/TypeScript/Tailwind app is scaffolded and runnable, with lint, typecheck, unit tests (Vitest), E2E tests (Playwright), and CI wired up. No business logic (auth, database schema, Stripe, inventory) exists yet — that begins in Phase 1. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
 
 ## Project Purpose
 
@@ -8,27 +8,26 @@ A transparent, mobile-first nonprofit e-commerce platform. A supporter purchases
 
 This is **not** a raffle, sweepstakes, gambling product, or chance-based prize mechanic — it is standard e-commerce with full chain-of-custody tracking from inventory receipt through final disposition. See `PRODUCT_BUILD_SPEC.md` §2–3 for the non-negotiable rules and compliance boundary.
 
-## Stack (planned)
+## Stack
 
-- **Frontend:** Next.js (App Router), React, TypeScript
-- **Styling:** Tailwind CSS
-- **Database:** PostgreSQL via Supabase
-- **Auth:** Supabase Auth (+ Row Level Security)
-- **Payments:** Stripe Checkout + verified, idempotent webhooks
-- **Email:** Resend
-- **Hosting:** Vercel
-- **Testing:** Vitest (unit) + Playwright (E2E)
-- **Source control:** GitHub
+- **Frontend:** Next.js 16 (App Router), React 19, TypeScript — scaffolded and running
+- **Styling:** Tailwind CSS 4 — scaffolded and running
+- **Database:** PostgreSQL via Supabase — not yet wired up (Phase 1)
+- **Auth:** Supabase Auth (+ Row Level Security) — not yet wired up (Phase 1)
+- **Payments:** Stripe Checkout + verified, idempotent webhooks — not yet wired up (Phase 4)
+- **Email:** Resend — not yet wired up
+- **Hosting:** Vercel — not yet deployed
+- **Testing:** Vitest (unit) + Playwright (E2E) — installed and running with smoke tests
+- **CI:** GitHub Actions (`.github/workflows/ci.yml`) — lint, typecheck, unit tests, build, E2E on every push/PR
+- **Source control:** GitHub (`samoanfro/LIve-Pull-Fundraiser`)
 
 ## Local Development Requirements
 
-_To be finalized in Phase 0._ Expected baseline:
-
-- Node.js 20+
-- npm (or pnpm, to be decided in Phase 0)
-- A Supabase project (local CLI or hosted)
-- A Stripe account in test mode
-- A Resend account (or equivalent transactional email provider) for local email testing
+- Node.js 24+ (matches CI; Node 20+ likely works but is untested here)
+- npm
+- A Supabase project (local CLI or hosted) — required starting Phase 1
+- A Stripe account in test mode — required starting Phase 4
+- A Resend account (or equivalent transactional email provider) — required starting Phase 4/6
 
 ## Environment Variables
 
@@ -71,16 +70,17 @@ npm install
 npm run dev
 ```
 
-(Scaffolding not yet created — this will work starting in Phase 0.)
+Then open http://localhost:3000.
 
 ## Running Tests
 
 ```bash
-npm run test        # Vitest unit tests
-npm run test:e2e     # Playwright end-to-end tests
+npm run lint         # ESLint
+npm run typecheck    # TypeScript, no emit
+npm run test         # Vitest unit tests
+npm run test:watch   # Vitest in watch mode
+npm run test:e2e     # Playwright end-to-end tests (builds and runs the app first)
 ```
-
-(Not yet available — test tooling is part of Phase 0.)
 
 ## Development Method
 
