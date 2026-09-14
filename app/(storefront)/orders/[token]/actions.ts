@@ -8,11 +8,13 @@ export interface ActionState {
   success?: boolean;
 }
 
-export async function chooseShipOrDonateAction(
+async function getOwnedCustomerOrOrder(
   token: string,
   orderId: string,
-  choice: "ship" | "donate",
-): Promise<ActionState> {
+): Promise<
+  | { ok: true; customerId: string }
+  | { ok: false; error: string }
+> {
   const supabase = createServiceRoleClient();
 
   const { data: customer } = await supabase
@@ -23,12 +25,9 @@ export async function chooseShipOrDonateAction(
     .maybeSingle();
 
   if (!customer) {
-    return { error: "This link is invalid or has expired." };
+    return { ok: false, error: "This link is invalid or has expired." };
   }
 
-  // Ownership check: this token must belong to the customer on this order.
-  // select_ship_or_donate() does not check ownership itself (it's called
-  // from other contexts too), so the caller -- here -- must verify it.
   const { data: order } = await supabase
     .from("orders")
     .select("id, customer_id")
@@ -36,17 +35,87 @@ export async function chooseShipOrDonateAction(
     .maybeSingle();
 
   if (!order || order.customer_id !== customer.id) {
-    return { error: "Order not found." };
+    return { ok: false, error: "Order not found." };
   }
 
+  return { ok: true, customerId: customer.id };
+}
+
+export async function chooseShipOrDonateAction(
+  token: string,
+  orderId: string,
+  choice: "ship" | "donate",
+): Promise<ActionState> {
+  const owned = await getOwnedCustomerOrOrder(token, orderId);
+  if (!owned.ok) return { error: owned.error };
+
+  const supabase = createServiceRoleClient();
   const { error } = await supabase.rpc("select_ship_or_donate", {
     target_order_id: orderId,
     choice,
   });
 
-  if (error) {
-    return { error: error.message };
+  if (error) return { error: error.message };
+
+  revalidatePath(`/orders/${token}`);
+  return { success: true };
+}
+
+export interface ShippingAddress {
+  name: string;
+  line1: string;
+  line2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
+export async function submitShippingAddressAction(
+  token: string,
+  orderId: string,
+  address: ShippingAddress,
+): Promise<ActionState> {
+  const owned = await getOwnedCustomerOrOrder(token, orderId);
+  if (!owned.ok) return { error: owned.error };
+
+  if (
+    !address.name.trim() ||
+    !address.line1.trim() ||
+    !address.city.trim() ||
+    !address.state.trim() ||
+    !address.postalCode.trim() ||
+    !address.country.trim()
+  ) {
+    return { error: "Please fill in all required address fields." };
   }
+
+  const supabase = createServiceRoleClient();
+  const { error } = await supabase.rpc("submit_shipping_address", {
+    target_order_id: orderId,
+    address,
+  });
+
+  if (error) return { error: error.message };
+
+  revalidatePath(`/orders/${token}`);
+  return { success: true };
+}
+
+export async function confirmDonationBackAction(
+  token: string,
+  orderId: string,
+): Promise<ActionState> {
+  const owned = await getOwnedCustomerOrOrder(token, orderId);
+  if (!owned.ok) return { error: owned.error };
+
+  const supabase = createServiceRoleClient();
+  const { error } = await supabase.rpc("confirm_donation_back", {
+    target_order_id: orderId,
+    policy_version: "v1",
+  });
+
+  if (error) return { error: error.message };
 
   revalidatePath(`/orders/${token}`);
   return { success: true };

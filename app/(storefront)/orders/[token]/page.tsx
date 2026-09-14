@@ -88,6 +88,18 @@ export default async function MyPullsPage({
         .in("opened_pack_id", openedPackIds)
     : { data: [] };
 
+  const [{ data: shippingRequests }, { data: donationBacks }] =
+    await Promise.all([
+      supabase
+        .from("shipping_requests")
+        .select("order_id, status, carrier, tracking_number, address_json")
+        .in("order_id", orderIds),
+      supabase
+        .from("donation_backs")
+        .select("order_id, confirmed_at, disposition_status")
+        .in("order_id", orderIds),
+    ]);
+
   return (
     <div className="mx-auto max-w-2xl">
       <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
@@ -179,15 +191,43 @@ export default async function MyPullsPage({
                 );
               })}
 
-              {DECISION_STATUSES.includes(order.status) && (
-                <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
-                  <ShipDonateChoice
-                    token={token}
-                    orderId={order.id}
-                    status={order.status}
-                  />
-                </div>
-              )}
+              {DECISION_STATUSES.includes(order.status) &&
+                (() => {
+                  const shippingRequest = shippingRequests?.find(
+                    (sr) => sr.order_id === order.id,
+                  );
+                  const donationBack = donationBacks?.find(
+                    (db) => db.order_id === order.id,
+                  );
+                  return (
+                    <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+                      <ShipDonateChoice
+                        token={token}
+                        orderId={order.id}
+                        shippingRequest={
+                          shippingRequest
+                            ? {
+                                status: shippingRequest.status,
+                                carrier: shippingRequest.carrier,
+                                trackingNumber:
+                                  shippingRequest.tracking_number,
+                                addressJson: shippingRequest.address_json,
+                              }
+                            : null
+                        }
+                        donationBack={
+                          donationBack
+                            ? {
+                                confirmedAt: donationBack.confirmed_at,
+                                dispositionStatus:
+                                  donationBack.disposition_status,
+                              }
+                            : null
+                        }
+                      />
+                    </div>
+                  );
+                })()}
             </div>
           );
         })}

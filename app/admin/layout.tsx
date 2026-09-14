@@ -75,7 +75,20 @@ export default async function AdminLayout({
             </Link>
           )}
           {canManageShipping(role) && (
-            <span className="text-zinc-400">Shipping (not built yet)</span>
+            <Link
+              href="/admin/shipping"
+              className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+            >
+              Shipping
+            </Link>
+          )}
+          {isAdminRole(role) && (
+            <Link
+              href="/admin/donations"
+              className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+            >
+              Donations
+            </Link>
           )}
         </nav>
       </header>
