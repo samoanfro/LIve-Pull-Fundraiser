@@ -1,6 +1,6 @@
 # Live Pull Fundraising Platform
 
-**Status: Phase 1 (Auth & Organization) done.** Supabase Auth (magic link), `organizations`/`profiles`/`organization_members`, and baseline Row Level Security are live on the linked Supabase project, with a role-gated admin shell. Campaigns, products, inventory, checkout, and everything payment-related do not exist yet — that starts in Phase 2. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
+**Status: Phase 2 (Campaigns, Products, Storage Locations, Receive Inventory) done.** Admin can create campaigns/products/storage locations and receive individually tracked Pack ID inventory through a mobile-first Receive Inventory screen. Pack ID uniqueness is enforced at the database level. Public storefront, checkout, Stripe, and opening operations do not exist yet — that starts in Phase 3. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
 
 ## Project Purpose
 
