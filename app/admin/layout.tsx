@@ -1,29 +1,15 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
+import { getCurrentOrgContext } from "@/lib/auth/current-org";
 import { isAdminRole, canManageOpeningQueue, canManageShipping } from "@/lib/permissions/roles";
-import type { OrgRole } from "@/lib/permissions/roles";
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const context = await getCurrentOrgContext();
 
-  if (!user) {
-    redirect("/login");
-  }
-
-  const { data: memberships } = await supabase
-    .from("organization_members")
-    .select("role, organization_id, organizations(name)")
-    .eq("user_id", user.id)
-    .eq("status", "active");
-
-  if (!memberships || memberships.length === 0) {
+  if (!context) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-6 text-center dark:bg-black">
         <p className="text-zinc-600 dark:text-zinc-400">
@@ -33,16 +19,16 @@ export default async function AdminLayout({
     );
   }
 
-  // MVP: a staff account belongs to one organization at a time.
-  const membership = memberships[0];
-  const role = membership.role as OrgRole;
+  const { user, role, organizationName } = context;
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
       <header className="border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-zinc-500">Signed in as</p>
+            <p className="text-sm text-zinc-500">
+              {organizationName || "Signed in as"}
+            </p>
             <p className="font-medium text-zinc-900 dark:text-zinc-50">
               {user.email}
             </p>
@@ -51,21 +37,40 @@ export default async function AdminLayout({
             {role}
           </span>
         </div>
-        <nav className="mt-4 flex gap-4 text-sm">
+        <nav className="mt-4 flex flex-wrap gap-4 text-sm">
           {isAdminRole(role) && (
-            <span className="text-zinc-700 dark:text-zinc-300">
-              Campaigns &middot; Products &middot; Inventory
-            </span>
+            <>
+              <Link
+                href="/admin/campaigns"
+                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              >
+                Campaigns
+              </Link>
+              <Link
+                href="/admin/products"
+                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              >
+                Products
+              </Link>
+              <Link
+                href="/admin/storage-locations"
+                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              >
+                Storage Locations
+              </Link>
+              <Link
+                href="/admin/inventory/receive"
+                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              >
+                Receive Inventory
+              </Link>
+            </>
           )}
           {canManageOpeningQueue(role) && (
-            <span className="text-zinc-700 dark:text-zinc-300">
-              Opening Queue
-            </span>
+            <span className="text-zinc-400">Opening Queue (not built yet)</span>
           )}
           {canManageShipping(role) && (
-            <span className="text-zinc-700 dark:text-zinc-300">
-              Shipping
-            </span>
+            <span className="text-zinc-400">Shipping (not built yet)</span>
           )}
         </nav>
       </header>
