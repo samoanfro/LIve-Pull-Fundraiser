@@ -1,6 +1,6 @@
 # Live Pull Fundraising Platform
 
-**Status: Phase 4 (Stripe Checkout & Inventory Reservations) built, not yet live-tested.** Checkout creates a real order and reserves a real inventory unit server-side (race-safe, verified directly against the database), and the Stripe webhook route is wired up to finalize payment and assign packs idempotently. **A real Stripe test-mode account is not connected yet** — `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` are blank in `.env.local`, so end-to-end Checkout Session creation and webhook delivery have not been exercised live. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
+**Status: Phase 5 (Opening Sessions & Opening Queue) done.** Staff can create an opening session, queue paid/pack-assigned orders, and run the mobile-first Host Console: confirm the physical Pack ID (blocked with an exception on mismatch, never silently substituted), record pulled items, and complete the opening — which locks further edits and advances the order. Phase 4 (Stripe Checkout & Inventory Reservations) is built and verified at the database level, but **still not live-tested against a real Stripe account** — `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` remain blank in `.env.local`. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
 
 ## Project Purpose
 
