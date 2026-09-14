@@ -9,6 +9,10 @@ Living list of open items across phases. Updated as each phase completes. Check 
 ## Compliance decisions needing your (and likely legal) input
 
 - [ ] **No automatic donation tax receipts exist, by design.** This platform is structured as e-commerce (real product, disclosed price), not a charitable donation at purchase time — spec §18/§33/§49 explicitly prohibit automatically claiming tax deductibility or fair-market value. If you want real tax-deductible receipts (e.g. for the Donate Back path), that needs CPA/legal review of the quid-pro-quo calculation before any code is written.
+- [ ] **Question to revisit: can the purchase itself be framed as "a donation" (e.g. "all proceeds go to SHi") since the boxes/packs are donated by donors and resold to fund the cause?** Two different things bundled in this question worth separating when we discuss it:
+  - Saying "100% of proceeds support SHi" is a true statement about fund use, not a tax claim — the spec already supports this via the campaign's `beneficiary_statement` field and §33's required "nonprofit beneficiary" / "fundraising purpose" disclosures. That part is likely fine as-is, low risk.
+  - Calling the *purchase itself* "a donation" in a way that implies the buyer's payment is tax-deductible is the same compliance boundary as the receipts question above (quid pro quo: buyer receives real goods equal to what they paid) — that framing needs legal review before it goes on any product page, regardless of whether the inventory was donor-sourced.
+  - Worth discussing: donor-sourced inventory (near-$0 cost basis) could support an accurate, non-deductible-implying claim like "because these boxes were donated to us, nearly all of your purchase price goes directly to the mission" — that's a factual statement about margins, not a tax claim.
 
 ## Blocking / needs your input
 
