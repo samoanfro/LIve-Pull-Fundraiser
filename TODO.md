@@ -23,11 +23,10 @@ Living list of open items across phases. Updated as each phase completes. Check 
 - No RLS cross-tenant isolation test yet with a second real organization (only single-org testing so far).
 - Campaign/product slugs are unique per-organization, not globally — a multi-org public storefront will eventually need an org-scoped URL path (e.g. `/o/[orgSlug]/campaigns/[slug]`).
 - Inventory/campaign/product writes are admin/owner-only in RLS — spec doesn't explicitly assign inventory receiving to other staff roles, so this was scoped conservatively. Widen later if desired.
-- No audit logging yet on inventory or pull corrections (that's Phase 8) — admins can currently update rows with no audit trail.
 - No CSV bulk-import for inventory (spec allows deferring this).
 - Small crash window in the Stripe webhook handler: if processing fails between claiming the event ID and finishing `finalize_paid_order`, the order could stay stuck at `PENDING_PAYMENT` with the event marked "already processed" (Stripe won't retry). Acceptable for MVP; worth a periodic reconciliation job before real money flows through.
-- No refund/dispute handling yet (Phase 8).
-- No admin UI to resolve an opening "mismatch exception" — host can just retry with the correct Pack ID, but there's no dedicated exception-review screen.
+- `record_refund()` only records a refund that staff already issued manually via the Stripe dashboard — it does not call Stripe's Refund API itself. Real refund initiation from the admin UI is a fast-follow, not yet built.
+- No admin UI yet for `correct_pulled_item()`, `set_inventory_status()`, or `set_member_role()` — these exist and are audited at the database level (verified directly) but are only callable via SQL/RPC right now, not from a form. Host console still lets a host retry a mismatched Pack ID directly, so the common case is covered; these are for less-common corrections.
 - Multi-item order advancement (all items must be opened before the order moves to `AWAITING_CUSTOMER_DECISION`) is implemented but only tested with single-item orders so far.
 - Guest order-access link (`/orders/[token]`) is only ever shown on the checkout success page right now — with no Resend/email wired up, a guest who closes that tab without bookmarking the link has no way to get back in. This needs to be fixed once email notifications exist (Phase 4/6 dependency on Resend).
 - No dedicated supporter sign-in flow yet — only the guest-access-token path exists for customers; a signed-in customer account path (via the same Supabase Auth used by staff) isn't built.
