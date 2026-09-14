@@ -1,8 +1,15 @@
 "use server";
 
+import { randomBytes } from "node:crypto";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { getStripeClient } from "@/lib/stripe/client";
 import type Stripe from "stripe";
+
+const GUEST_TOKEN_TTL_DAYS = 180;
+
+function generateGuestAccessToken(): string {
+  return randomBytes(32).toString("hex");
+}
 
 export interface CheckoutCartItem {
   productId: string;
@@ -71,23 +78,51 @@ export async function createCheckoutSessionAction(
   // rather than creating a duplicate on every checkout attempt.
   const { data: existingCustomer } = await supabase
     .from("customers")
-    .select("id")
+    .select("id, guest_access_token, guest_token_expires_at")
     .eq("organization_id", organizationId)
     .eq("email", guestEmail)
     .is("profile_id", null)
     .maybeSingle();
 
   let customerId = existingCustomer?.id as string | undefined;
+  let guestAccessToken = existingCustomer?.guest_access_token as
+    | string
+    | undefined;
+
+  const tokenExpired =
+    existingCustomer?.guest_token_expires_at &&
+    new Date(existingCustomer.guest_token_expires_at) < new Date();
+
   if (!customerId) {
+    guestAccessToken = generateGuestAccessToken();
     const { data: newCustomer, error: customerError } = await supabase
       .from("customers")
-      .insert({ organization_id: organizationId, email: guestEmail })
+      .insert({
+        organization_id: organizationId,
+        email: guestEmail,
+        guest_access_token: guestAccessToken,
+        guest_token_expires_at: new Date(
+          Date.now() + GUEST_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      })
       .select("id")
       .single();
     if (customerError || !newCustomer) {
       return { error: "Could not create customer record." };
     }
     customerId = newCustomer.id;
+  } else if (!guestAccessToken || tokenExpired) {
+    // Refresh a missing or expired token on an existing guest customer.
+    guestAccessToken = generateGuestAccessToken();
+    await supabase
+      .from("customers")
+      .update({
+        guest_access_token: guestAccessToken,
+        guest_token_expires_at: new Date(
+          Date.now() + GUEST_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000,
+        ).toISOString(),
+      })
+      .eq("id", customerId);
   }
 
   const { data: order, error: orderError } = await supabase
@@ -172,7 +207,7 @@ export async function createCheckoutSessionAction(
     mode: "payment",
     line_items: lineItems,
     customer_email: guestEmail,
-    success_url: `${appUrl}/checkout/success?order_id=${order.id}`,
+    success_url: `${appUrl}/checkout/success?order_id=${order.id}&token=${guestAccessToken}`,
     cancel_url: `${appUrl}/checkout`,
     metadata: { order_id: order.id },
   });
