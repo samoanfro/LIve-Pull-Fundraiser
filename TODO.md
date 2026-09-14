@@ -25,7 +25,9 @@ Living list of open items across phases. Updated as each phase completes. Check 
 - No refund/dispute handling yet (Phase 8).
 - No admin UI to resolve an opening "mismatch exception" — host can just retry with the correct Pack ID, but there's no dedicated exception-review screen.
 - Multi-item order advancement (all items must be opened before the order moves to `AWAITING_CUSTOMER_DECISION`) is implemented but only tested with single-item orders so far.
-- Guest checkout email is captured but customer accounts aren't fully built out (no dedicated supporter sign-in flow yet — Phase 6 uses secure guest-access-token links instead per spec §24).
+- Guest order-access link (`/orders/[token]`) is only ever shown on the checkout success page right now — with no Resend/email wired up, a guest who closes that tab without bookmarking the link has no way to get back in. This needs to be fixed once email notifications exist (Phase 4/6 dependency on Resend).
+- No dedicated supporter sign-in flow yet — only the guest-access-token path exists for customers; a signed-in customer account path (via the same Supabase Auth used by staff) isn't built.
+- Ship/Donate choice only updates `orders.status` so far — it does not yet create a `shipping_requests` or `donation_backs` record with address/disposition details. That's Phase 7.
 
 ## Deferred by design (per PRODUCT_BUILD_SPEC.md)
 

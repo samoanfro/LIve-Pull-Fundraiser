@@ -1,6 +1,6 @@
 # Live Pull Fundraising Platform
 
-**Status: Phase 5 (Opening Sessions & Opening Queue) done.** Staff can create an opening session, queue paid/pack-assigned orders, and run the mobile-first Host Console: confirm the physical Pack ID (blocked with an exception on mismatch, never silently substituted), record pulled items, and complete the opening — which locks further edits and advances the order. Phase 4 (Stripe Checkout & Inventory Reservations) is built and verified at the database level, but **still not live-tested against a real Stripe account** — `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` remain blank in `.env.local`. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
+**Status: Phase 6 (Supporter Pull Results) done.** Supporters can view their order status, product, Pack ID, opening date, and pulled items via a secure guest-order-access link (`/orders/[token]`, generated at checkout, surfaced on the success page since email isn't wired up yet), and choose Ship My Items or Donate Back. Phase 4 (Stripe Checkout & Inventory Reservations) is built and verified at the database level, but **still not live-tested against a real Stripe account** — `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` remain blank in `.env.local`. See `TODO.md` for the full running list of open items, `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the source of truth before any architectural changes.
 
 ## Project Purpose
 
