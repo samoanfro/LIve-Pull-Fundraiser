@@ -51,6 +51,12 @@ export function ProductForm({ campaigns }: { campaigns: Campaign[] }) {
         rows={3}
         className="rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
       />
+      <textarea
+        name="disclosure_text"
+        placeholder="Required disclosures shown on the product page (contents vary, opening method, shipping terms, refund policy, etc.)"
+        rows={4}
+        className="rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
+      />
       <button
         type="submit"
         disabled={pending}

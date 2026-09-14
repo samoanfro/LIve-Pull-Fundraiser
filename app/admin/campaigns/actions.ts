@@ -45,3 +45,26 @@ export async function createCampaignAction(
   revalidatePath("/admin/campaigns");
   return { success: true };
 }
+
+export async function setCampaignStatusAction(
+  campaignId: string,
+  status: "draft" | "published" | "closed",
+) {
+  const context = await getCurrentOrgContext();
+  if (!context || !isAdminRole(context.role)) {
+    return { error: "Not authorized." };
+  }
+
+  const { error } = await context.supabase
+    .from("campaigns")
+    .update({ status })
+    .eq("id", campaignId)
+    .eq("organization_id", context.organizationId);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/campaigns");
+  return { success: true };
+}

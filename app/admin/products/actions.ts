@@ -44,7 +44,31 @@ export async function createProductAction(
     slug: slugify(name),
     price_cents: Math.round(priceDollars * 100),
     description: String(formData.get("description") ?? "") || null,
+    disclosure_text: String(formData.get("disclosure_text") ?? "") || null,
   });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/products");
+  return { success: true };
+}
+
+export async function setProductStatusAction(
+  productId: string,
+  status: "draft" | "published" | "archived",
+) {
+  const context = await getCurrentOrgContext();
+  if (!context || !isAdminRole(context.role)) {
+    return { error: "Not authorized." };
+  }
+
+  const { error } = await context.supabase
+    .from("products")
+    .update({ status })
+    .eq("id", productId)
+    .eq("organization_id", context.organizationId);
 
   if (error) {
     return { error: error.message };
