@@ -37,6 +37,9 @@ Living list of open items across phases. Updated as each phase completes. Check 
 - Shipping/donation admin queues (Shipping Queue, Donation Back Queue) have no pagination or filtering — fine for low volume, will need it once real order volume grows.
 - No shipping cost/carrier API integration (Shippo/EasyPost) — tracking is entered manually by staff, per spec's MVP allowance (§39 Phase 7).
 - No notification is sent to the customer when their shipment ships or their donation disposition is recorded (Resend/email dependency, same as the guest-link issue above).
+- Reports page has no date-range filtering (all-time only) and no per-campaign breakdown — org-wide totals only for now.
+- "Estimated Net Funds Raised" on the Reports page does not subtract payment processing fees or shipping cost (neither is tracked yet) — it's explicitly labeled as an estimate, but don't treat it as a precise number for financial reporting.
+- Reports page was verified by cross-checking every figure against hand-written SQL run directly on the live database (all matched), but the actual rendered UI has not been visually verified in a browser — the sandbox's external-domain policy blocks completing a real Supabase magic-link sign-in here, so no admin page has had a true live-authenticated visual check since Phase 3. Worth you doing a quick manual click-through when you get a chance.
 
 ## Deferred by design (per PRODUCT_BUILD_SPEC.md)
 
