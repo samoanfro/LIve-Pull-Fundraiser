@@ -1,6 +1,6 @@
 # Live Pull Fundraising Platform
 
-**Status: Phase 6 (Supporter Pull Results) done.** Supporters can view their order status, product, Pack ID, opening date, and pulled items via a secure guest-order-access link (`/orders/[token]`, generated at checkout, surfaced on the success page since email isn't wired up yet), and choose Ship My Items or Donate Back. Phase 4 (Stripe Checkout & Inventory Reservations) is built and verified at the database level, but **still not live-tested against a real Stripe account** — `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` remain blank in `.env.local`. See `TODO.md` for the full running list of open items, `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the source of truth before any architectural changes.
+**Status: Phase 7 (Shipping and Donation Back) done.** The Ship/Donate choice from Phase 6 now leads to a real address form or an explicit donation-policy confirmation, backed by `shipping_requests`/`donation_backs`/`donation_back_items`. Staff have a Shipping Queue (carrier/tracking/status) and Donation Back Queue (disposition tracking) in the admin panel. Phase 4 (Stripe Checkout & Inventory Reservations) is built and verified at the database level, but **still not live-tested against a real Stripe account** — `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` remain blank in `.env.local`. See `TODO.md` for the full running list of open items, `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the source of truth before any architectural changes.
 
 ## Project Purpose
 

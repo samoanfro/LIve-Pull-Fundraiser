@@ -27,7 +27,9 @@ Living list of open items across phases. Updated as each phase completes. Check 
 - Multi-item order advancement (all items must be opened before the order moves to `AWAITING_CUSTOMER_DECISION`) is implemented but only tested with single-item orders so far.
 - Guest order-access link (`/orders/[token]`) is only ever shown on the checkout success page right now — with no Resend/email wired up, a guest who closes that tab without bookmarking the link has no way to get back in. This needs to be fixed once email notifications exist (Phase 4/6 dependency on Resend).
 - No dedicated supporter sign-in flow yet — only the guest-access-token path exists for customers; a signed-in customer account path (via the same Supabase Auth used by staff) isn't built.
-- Ship/Donate choice only updates `orders.status` so far — it does not yet create a `shipping_requests` or `donation_backs` record with address/disposition details. That's Phase 7.
+- Shipping/donation admin queues (Shipping Queue, Donation Back Queue) have no pagination or filtering — fine for low volume, will need it once real order volume grows.
+- No shipping cost/carrier API integration (Shippo/EasyPost) — tracking is entered manually by staff, per spec's MVP allowance (§39 Phase 7).
+- No notification is sent to the customer when their shipment ships or their donation disposition is recorded (Resend/email dependency, same as the guest-link issue above).
 
 ## Deferred by design (per PRODUCT_BUILD_SPEC.md)
 
