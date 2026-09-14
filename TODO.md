@@ -18,9 +18,9 @@ Living list of open items across phases. Updated as each phase completes. Check 
 
 - [ ] Create a real Stripe account (test mode) and provide `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` — Phase 4 (Checkout/reservations) is built and verified at the database level but not yet live-tested end-to-end.
 - [ ] For local Stripe webhook testing you'll need either the Stripe CLI (`stripe listen --forward-to localhost:3000/api/stripe/webhook`) or a deployed environment — plan which before testing Phase 4 live.
-- [ ] Set `git config --global user.name` / `user.email` to your real identity — commits are currently attributed to an auto-detected `fredsiaosi@Davids-iMac-Pro.local`.
+- [x] Set `git config --global user.name` / `user.email` to your real identity — done (`samoanfro` / `fred.siaosi@gmail.com`, matching your GitHub account). This was actually blocking Vercel deployment (it rejects commits whose author email isn't a verified GitHub email), not just cosmetic.
 - [ ] When ready for real transactional email, create a Resend account and provide `EMAIL_PROVIDER_API_KEY` / `EMAIL_FROM_ADDRESS`.
-- [ ] **Production domain chosen: `socialhealthmarketplace.com`** (registered via Squarespace Domains, domain lock currently ON). Not yet connected to anything — the app hasn't been deployed to Vercel yet (that's part of Phase 10). When we deploy: (1) create the Vercel project, (2) add this domain in Vercel's project settings, (3) turn off the Squarespace domain lock temporarily and update DNS records (or nameservers) at Squarespace to point to Vercel, (4) set `NEXT_PUBLIC_APP_URL` to `https://socialhealthmarketplace.com` and update Stripe/Supabase redirect URLs to match.
+- [ ] **Production domain chosen: `socialhealthmarketplace.com`** (registered via Squarespace Domains, domain lock currently ON). Vercel project (`l-ive-pull-fundraiser`) created and linked to GitHub; domain not yet connected. Remaining steps: (1) add the domain in Vercel's project settings, (2) turn off the Squarespace domain lock temporarily and update DNS records at Squarespace to point to Vercel, (3) set `NEXT_PUBLIC_APP_URL` to `https://socialhealthmarketplace.com` and update Stripe/Supabase redirect URLs to match. See `DEPLOYMENT.md` for the full checklist.
 
 ## Known risks / technical debt
 
