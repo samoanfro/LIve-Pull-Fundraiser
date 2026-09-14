@@ -83,12 +83,26 @@ export default async function AdminLayout({
             </Link>
           )}
           {isAdminRole(role) && (
-            <Link
-              href="/admin/donations"
-              className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
-            >
-              Donations
-            </Link>
+            <>
+              <Link
+                href="/admin/donations"
+                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              >
+                Donations
+              </Link>
+              <Link
+                href="/admin/orders"
+                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              >
+                Orders
+              </Link>
+              <Link
+                href="/admin/audit-log"
+                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              >
+                Audit History
+              </Link>
+            </>
           )}
         </nav>
       </header>

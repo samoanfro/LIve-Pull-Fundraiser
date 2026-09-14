@@ -6,6 +6,10 @@ Living list of open items across phases. Updated as each phase completes. Check 
 
 - [ ] **Review payment portal options before signing up for Stripe.** You asked to be reminded of this once Phase 6 is done — don't create the Stripe account until you've compared alternatives (fees, payout timing, dispute handling, nonprofit-specific terms) and confirmed Stripe is the right fit for a nonprofit fundraising use case.
 
+## Compliance decisions needing your (and likely legal) input
+
+- [ ] **No automatic donation tax receipts exist, by design.** This platform is structured as e-commerce (real product, disclosed price), not a charitable donation at purchase time — spec §18/§33/§49 explicitly prohibit automatically claiming tax deductibility or fair-market value. If you want real tax-deductible receipts (e.g. for the Donate Back path), that needs CPA/legal review of the quid-pro-quo calculation before any code is written.
+
 ## Blocking / needs your input
 
 - [ ] Create a real Stripe account (test mode) and provide `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` — Phase 4 (Checkout/reservations) is built and verified at the database level but not yet live-tested end-to-end.
