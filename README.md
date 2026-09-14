@@ -1,6 +1,6 @@
 # Live Pull Fundraising Platform
 
-**Status: Phase 2 (Campaigns, Products, Storage Locations, Receive Inventory) done.** Admin can create campaigns/products/storage locations and receive individually tracked Pack ID inventory through a mobile-first Receive Inventory screen. Pack ID uniqueness is enforced at the database level. Public storefront, checkout, Stripe, and opening operations do not exist yet — that starts in Phase 3. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
+**Status: Phase 3 (Storefront) done.** Public campaign/product pages, required disclosures, a client-side cart, and a guest/account checkout handoff are live. No payment processing yet — Stripe Checkout, inventory reservations, and pack assignment start in Phase 4. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
 
 ## Project Purpose
 
