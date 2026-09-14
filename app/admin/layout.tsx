@@ -67,7 +67,12 @@ export default async function AdminLayout({
             </>
           )}
           {canManageOpeningQueue(role) && (
-            <span className="text-zinc-400">Opening Queue (not built yet)</span>
+            <Link
+              href="/admin/opening-sessions"
+              className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+            >
+              Opening Sessions
+            </Link>
           )}
           {canManageShipping(role) && (
             <span className="text-zinc-400">Shipping (not built yet)</span>
