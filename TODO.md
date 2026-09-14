@@ -20,6 +20,7 @@ Living list of open items across phases. Updated as each phase completes. Check 
 - [ ] For local Stripe webhook testing you'll need either the Stripe CLI (`stripe listen --forward-to localhost:3000/api/stripe/webhook`) or a deployed environment — plan which before testing Phase 4 live.
 - [ ] Set `git config --global user.name` / `user.email` to your real identity — commits are currently attributed to an auto-detected `fredsiaosi@Davids-iMac-Pro.local`.
 - [ ] When ready for real transactional email, create a Resend account and provide `EMAIL_PROVIDER_API_KEY` / `EMAIL_FROM_ADDRESS`.
+- [ ] **Production domain chosen: `socialhealthmarketplace.com`** (registered via Squarespace Domains, domain lock currently ON). Not yet connected to anything — the app hasn't been deployed to Vercel yet (that's part of Phase 10). When we deploy: (1) create the Vercel project, (2) add this domain in Vercel's project settings, (3) turn off the Squarespace domain lock temporarily and update DNS records (or nameservers) at Squarespace to point to Vercel, (4) set `NEXT_PUBLIC_APP_URL` to `https://socialhealthmarketplace.com` and update Stripe/Supabase redirect URLs to match.
 
 ## Known risks / technical debt
 
