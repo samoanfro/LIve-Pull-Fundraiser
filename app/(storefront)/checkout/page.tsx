@@ -3,11 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart/cart-context";
+import { createCheckoutSessionAction } from "./actions";
 
 export default function CheckoutPage() {
-  const { items, totalCents } = useCart();
+  const { items, totalCents, clear } = useCart();
   const [email, setEmail] = useState("");
   const [asGuest, setAsGuest] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   if (items.length === 0) {
     return (
@@ -24,6 +27,36 @@ export default function CheckoutPage() {
         </p>
       </div>
     );
+  }
+
+  async function handleContinue() {
+    setError("");
+    if (!email || !email.includes("@")) {
+      setError("Enter a valid email address.");
+      return;
+    }
+    setSubmitting(true);
+
+    const result = await createCheckoutSessionAction(
+      items.map((item) => ({
+        productId: item.productId,
+        organizationId: item.organizationId,
+        quantity: item.quantity,
+      })),
+      email,
+    );
+
+    setSubmitting(false);
+
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+
+    if (result.url) {
+      clear();
+      window.location.href = result.url;
+    }
   }
 
   return (
@@ -81,16 +114,20 @@ export default function CheckoutPage() {
         </label>
       )}
 
+      {error && (
+        <p className="mt-3 text-sm text-red-600 dark:text-red-400">{error}</p>
+      )}
+
       <button
         type="button"
-        disabled
-        title="Payment processing is not built yet"
-        className="mt-6 w-full rounded-md bg-zinc-300 px-4 py-3 text-base font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+        onClick={handleContinue}
+        disabled={submitting}
+        className="mt-6 w-full rounded-md bg-zinc-900 px-4 py-3 text-base font-medium text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900"
       >
-        Continue to Payment (coming in Phase 4)
+        {submitting ? "Starting checkout..." : "Continue to Payment"}
       </button>
       <p className="mt-2 text-center text-xs text-zinc-500">
-        Stripe Checkout and inventory reservation are not implemented yet.
+        You&apos;ll be redirected to Stripe to complete your payment securely.
       </p>
     </div>
   );
