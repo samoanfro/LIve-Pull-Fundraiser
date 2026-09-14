@@ -1,6 +1,6 @@
 # Live Pull Fundraising Platform
 
-**Status: Phase 3 (Storefront) done.** Public campaign/product pages, required disclosures, a client-side cart, and a guest/account checkout handoff are live. No payment processing yet — Stripe Checkout, inventory reservations, and pack assignment start in Phase 4. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
+**Status: Phase 4 (Stripe Checkout & Inventory Reservations) built, not yet live-tested.** Checkout creates a real order and reserves a real inventory unit server-side (race-safe, verified directly against the database), and the Stripe webhook route is wired up to finalize payment and assign packs idempotently. **A real Stripe test-mode account is not connected yet** — `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` are blank in `.env.local`, so end-to-end Checkout Session creation and webhook delivery have not been exercised live. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
 
 ## Project Purpose
 
