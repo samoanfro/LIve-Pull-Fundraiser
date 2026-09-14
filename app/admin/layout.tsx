@@ -102,6 +102,12 @@ export default async function AdminLayout({
               >
                 Audit History
               </Link>
+              <Link
+                href="/admin/reports"
+                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              >
+                Reports
+              </Link>
             </>
           )}
         </nav>
