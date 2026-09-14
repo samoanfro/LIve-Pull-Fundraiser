@@ -1,6 +1,6 @@
 # Live Pull Fundraising Platform
 
-**Status: Phase 0 (foundation) in progress.** The Next.js/TypeScript/Tailwind app is scaffolded and runnable, with lint, typecheck, unit tests (Vitest), E2E tests (Playwright), and CI wired up. No business logic (auth, database schema, Stripe, inventory) exists yet — that begins in Phase 1. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
+**Status: Phase 1 (Auth & Organization) done.** Supabase Auth (magic link), `organizations`/`profiles`/`organization_members`, and baseline Row Level Security are live on the linked Supabase project, with a role-gated admin shell. Campaigns, products, inventory, checkout, and everything payment-related do not exist yet — that starts in Phase 2. See `CLAUDE.md` and `PRODUCT_BUILD_SPEC.md` for the full source of truth before any architectural changes.
 
 ## Project Purpose
 
@@ -12,8 +12,8 @@ This is **not** a raffle, sweepstakes, gambling product, or chance-based prize m
 
 - **Frontend:** Next.js 16 (App Router), React 19, TypeScript — scaffolded and running
 - **Styling:** Tailwind CSS 4 — scaffolded and running
-- **Database:** PostgreSQL via Supabase — not yet wired up (Phase 1)
-- **Auth:** Supabase Auth (+ Row Level Security) — not yet wired up (Phase 1)
+- **Database:** PostgreSQL via Supabase — `organizations`/`profiles`/`organization_members` live, RLS enabled
+- **Auth:** Supabase Auth (+ Row Level Security) — magic link sign-in working, role-gated admin shell
 - **Payments:** Stripe Checkout + verified, idempotent webhooks — not yet wired up (Phase 4)
 - **Email:** Resend — not yet wired up
 - **Hosting:** Vercel — not yet deployed
@@ -47,21 +47,21 @@ Copy `.env.example` to `.env.local` and fill in real values. **Never commit `.en
 
 ## Database Setup
 
-_To be established in Phase 0/1._ The plan is:
-
-1. Create a Supabase project (or run Supabase locally via the Supabase CLI).
-2. Apply migrations from `supabase/migrations/` in order.
-3. Run `supabase/seed.sql` for safe, non-real demo data (see `PRODUCT_BUILD_SPEC.md` §42).
-4. Verify Row Level Security policies are enabled on every exposed table before connecting a client.
+1. Create a Supabase project (this repo is linked to a hosted project via `supabase link`; ask a maintainer for access, or create your own project and re-link for a personal dev environment).
+2. `supabase login`, then `supabase link --project-ref <your-project-ref>`.
+3. Apply migrations: `supabase db push`.
+4. `supabase/seed.sql` (safe, non-real demo data per `PRODUCT_BUILD_SPEC.md` §42) does not exist yet — it lands with the Phase 2 campaign/product/inventory schema.
+5. RLS is enabled on every table as of Phase 1 — verify new tables follow the same default-deny pattern (see `supabase/migrations/20260914000000_phase1_auth_org.sql` for the pattern: SECURITY DEFINER helper functions to avoid policy self-recursion).
 
 ## Running Migrations
 
 ```bash
-supabase db reset      # local: recreate DB from migrations + seed
-supabase db push       # push new migrations to a linked remote project
+supabase db push               # push new migrations to the linked project
+supabase migration list        # confirm local/remote migration state match
+supabase db query "<sql>" --linked   # run an ad-hoc query against the linked project (bypasses RLS — use with care)
 ```
 
-(Exact commands will be confirmed once the Supabase CLI is wired up in Phase 0.)
+There is no local Postgres/Docker stack running yet (`supabase start` is not part of the current workflow) — all migrations apply directly to the linked hosted project. This is fine for now (empty pre-launch project) but should be revisited before real customer data exists.
 
 ## Running the Application
 
