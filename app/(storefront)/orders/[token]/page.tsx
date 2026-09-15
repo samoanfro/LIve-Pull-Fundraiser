@@ -1,5 +1,6 @@
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { ShipDonateChoice } from "./ship-donate-choice";
+import { heading, card } from "@/lib/ui";
 
 const DECISION_STATUSES = [
   "AWAITING_CUSTOMER_DECISION",
@@ -25,10 +26,8 @@ export default async function MyPullsPage({
   if (!customer) {
     return (
       <div className="mx-auto max-w-md text-center">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Link invalid or expired
-        </h1>
-        <p className="mt-4 text-zinc-600 dark:text-zinc-400">
+        <h1 className={`${heading} text-2xl`}>Link invalid or expired</h1>
+        <p className="mt-4 text-muted">
           This order link is no longer valid. If you completed a purchase
           recently, check the confirmation you received at checkout.
         </p>
@@ -45,12 +44,8 @@ export default async function MyPullsPage({
   if (!orders || orders.length === 0) {
     return (
       <div className="mx-auto max-w-md text-center">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          My Pulls
-        </h1>
-        <p className="mt-4 text-zinc-600 dark:text-zinc-400">
-          No orders found yet.
-        </p>
+        <h1 className={`${heading} text-2xl`}>My Pulls</h1>
+        <p className="mt-4 text-muted">No orders found yet.</p>
       </div>
     );
   }
@@ -102,10 +97,8 @@ export default async function MyPullsPage({
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-        My Pulls
-      </h1>
-      <p className="mt-1 text-sm text-zinc-500">{customer.email}</p>
+      <h1 className={`${heading} text-2xl`}>My Pulls</h1>
+      <p className="mt-1 text-sm text-muted">{customer.email}</p>
 
       <div className="mt-8 flex flex-col gap-8">
         {orders.map((order) => {
@@ -114,15 +107,12 @@ export default async function MyPullsPage({
           );
 
           return (
-            <div
-              key={order.id}
-              className="rounded-lg border border-zinc-200 p-5 dark:border-zinc-800"
-            >
+            <div key={order.id} className={card}>
               <div className="flex items-center justify-between">
-                <p className="font-medium text-zinc-900 dark:text-zinc-50">
+                <p className="font-medium text-foreground">
                   Order {order.id.slice(0, 8)}
                 </p>
-                <p className="text-sm text-zinc-500">{order.status}</p>
+                <p className="text-sm text-muted">{order.status}</p>
               </div>
 
               {items.map((item) => {
@@ -145,18 +135,15 @@ export default async function MyPullsPage({
                   : [];
 
                 return (
-                  <div
-                    key={item.id}
-                    className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800"
-                  >
-                    <p className="text-sm text-zinc-500">
+                  <div key={item.id} className="mt-4 border-t border-border pt-4">
+                    <p className="text-sm text-muted">
                       {product?.name} &middot;{" "}
                       <span className="font-mono">{unit?.pack_id}</span>
                     </p>
 
                     {openedPack ? (
                       <>
-                        <p className="mt-2 text-sm text-zinc-500">
+                        <p className="mt-2 text-sm text-muted">
                           Opened{" "}
                           {openedPack.opened_at
                             ? new Date(
@@ -166,23 +153,20 @@ export default async function MyPullsPage({
                         </p>
                         <ul className="mt-2 flex flex-col gap-1">
                           {pulls.map((pull) => (
-                            <li
-                              key={pull.id}
-                              className="text-zinc-900 dark:text-zinc-50"
-                            >
+                            <li key={pull.id} className="text-foreground">
                               {pull.title}
                               {pull.category ? ` (${pull.category})` : ""}
                             </li>
                           ))}
                           {pulls.length === 0 && (
-                            <li className="text-sm text-zinc-500">
+                            <li className="text-sm text-muted">
                               No pulls recorded yet.
                             </li>
                           )}
                         </ul>
                       </>
                     ) : (
-                      <p className="mt-2 text-sm text-zinc-500">
+                      <p className="mt-2 text-sm text-muted">
                         Not opened yet — check back after your opening
                         session.
                       </p>
@@ -200,7 +184,7 @@ export default async function MyPullsPage({
                     (db) => db.order_id === order.id,
                   );
                   return (
-                    <div className="mt-4 border-t border-zinc-200 pt-4 dark:border-zinc-800">
+                    <div className="mt-4 border-t border-border pt-4">
                       <ShipDonateChoice
                         token={token}
                         orderId={order.id}

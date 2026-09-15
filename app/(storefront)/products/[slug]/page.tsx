@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AddToCart } from "./add-to-cart";
+import { heading, card } from "@/lib/ui";
 
 export default async function ProductDetailPage({
   params,
@@ -32,17 +33,18 @@ export default async function ProductDetailPage({
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-        {product.name}
-      </h1>
-      <p className="mt-2 text-xl text-zinc-900 dark:text-zinc-50">
+      {!soldOut && (
+        <span className="inline-block rounded-full bg-accent/15 px-3 py-1 text-xs font-semibold tracking-wide text-accent uppercase">
+          In Stock
+        </span>
+      )}
+      <h1 className={`${heading} mt-2 text-3xl`}>{product.name}</h1>
+      <p className="mt-2 text-2xl font-bold text-accent">
         ${(product.price_cents / 100).toFixed(2)}
       </p>
 
       {product.description && (
-        <p className="mt-4 text-zinc-600 dark:text-zinc-400">
-          {product.description}
-        </p>
+        <p className="mt-4 text-muted">{product.description}</p>
       )}
 
       <div className="mt-6">
@@ -56,8 +58,8 @@ export default async function ProductDetailPage({
       </div>
 
       {/* Required disclosures — PRODUCT_BUILD_SPEC.md §33 */}
-      <div className="mt-10 rounded-lg border border-zinc-200 p-5 text-sm text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
-        <h2 className="font-semibold text-zinc-900 dark:text-zinc-50">
+      <div className={`${card} mt-10 text-sm text-muted`}>
+        <h2 className="font-semibold text-foreground">
           What you&apos;re buying
         </h2>
         <ul className="mt-3 flex flex-col gap-2">
@@ -84,7 +86,7 @@ export default async function ProductDetailPage({
           </li>
         </ul>
         {product.disclosure_text && (
-          <p className="mt-4 whitespace-pre-wrap border-t border-zinc-200 pt-4 dark:border-zinc-800">
+          <p className="mt-4 whitespace-pre-wrap border-t border-border pt-4">
             {product.disclosure_text}
           </p>
         )}

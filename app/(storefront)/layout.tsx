@@ -9,18 +9,20 @@ export default function StorefrontLayout({
 }) {
   return (
     <CartProvider>
-      <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
-        <header className="flex items-center justify-between border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
-          <Link
-            href="/"
-            className="font-semibold text-zinc-900 dark:text-zinc-50"
-          >
-            Live Pull Fundraising
+      <div className="flex min-h-screen flex-col bg-background">
+        <header className="flex items-center justify-between border-b border-border px-6 py-4">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-sm font-bold text-accent-foreground">
+              LP
+            </span>
+            <span className="font-semibold tracking-tight text-foreground">
+              Live Pull Fundraising
+            </span>
           </Link>
           <nav className="flex items-center gap-6">
             <Link
               href="/campaigns"
-              className="text-sm font-medium text-zinc-700 hover:underline dark:text-zinc-300"
+              className="text-sm font-medium text-muted transition-colors hover:text-foreground"
             >
               Campaigns
             </Link>

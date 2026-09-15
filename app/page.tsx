@@ -1,22 +1,33 @@
 import Link from "next/link";
+import { btnPrimary } from "@/lib/ui";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 px-6 text-center dark:bg-black">
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-        Live Pull Fundraising Platform
-      </h1>
-      <p className="mt-2 max-w-md text-zinc-600 dark:text-zinc-400">
-        Purchase a real pack. Watch us open your assigned pack. Receive
-        exactly what is pulled, or donate those items back to support the
-        nonprofit.
-      </p>
-      <Link
-        href="/campaigns"
-        className="mt-6 rounded-md bg-zinc-900 px-5 py-3 text-base font-medium text-white dark:bg-zinc-50 dark:text-zinc-900"
-      >
-        Browse Campaigns
-      </Link>
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-6 text-center">
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(60% 50% at 50% 0%, rgba(245,183,0,0.16) 0%, rgba(11,11,15,0) 70%)",
+        }}
+      />
+      <div className="relative">
+        <p className="text-sm font-semibold tracking-widest text-accent uppercase">
+          Live Pull Fundraising
+        </p>
+        <h1 className="mt-3 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          Buy a real pack.
+          <br />
+          Watch it opened live.
+        </h1>
+        <p className="mt-4 max-w-md text-lg text-muted mx-auto">
+          Receive exactly what&apos;s pulled from your assigned pack, or
+          donate the contents back to support the mission.
+        </p>
+        <Link href="/campaigns" className={`${btnPrimary} mt-8 px-8 py-4`}>
+          Browse Campaigns
+        </Link>
+      </div>
     </div>
   );
 }

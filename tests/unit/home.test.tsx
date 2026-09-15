@@ -3,10 +3,11 @@ import { render, screen } from "@testing-library/react";
 import Home from "@/app/page";
 
 describe("Home", () => {
-  it("renders the platform name", () => {
+  it("renders the platform name and a link to campaigns", () => {
     render(<Home />);
+    expect(screen.getByText("Live Pull Fundraising")).toBeInTheDocument();
     expect(
-      screen.getByText("Live Pull Fundraising Platform"),
-    ).toBeInTheDocument();
+      screen.getByRole("link", { name: /browse campaigns/i }),
+    ).toHaveAttribute("href", "/campaigns");
   });
 });

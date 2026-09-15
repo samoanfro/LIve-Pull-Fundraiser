@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/lib/cart/cart-context";
+import { heading, btnPrimary } from "@/lib/ui";
 
 export default function CartPage() {
   const { items, setQuantity, removeItem, totalCents } = useCart();
@@ -9,12 +10,10 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Your Cart
-        </h1>
-        <p className="mt-4 text-zinc-600 dark:text-zinc-400">
+        <h1 className={`${heading} text-2xl`}>Your Cart</h1>
+        <p className="mt-4 text-muted">
           Your cart is empty.{" "}
-          <Link href="/campaigns" className="underline">
+          <Link href="/campaigns" className="text-accent hover:underline">
             Browse campaigns
           </Link>
           .
@@ -25,21 +24,17 @@ export default function CartPage() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-        Your Cart
-      </h1>
+      <h1 className={`${heading} text-2xl`}>Your Cart</h1>
 
-      <ul className="mt-6 divide-y divide-zinc-200 dark:divide-zinc-800">
+      <ul className="mt-6 divide-y divide-border">
         {items.map((item) => (
           <li
             key={item.productId}
             className="flex items-center justify-between py-4"
           >
             <div>
-              <p className="font-medium text-zinc-900 dark:text-zinc-50">
-                {item.name}
-              </p>
-              <p className="text-sm text-zinc-500">
+              <p className="font-medium text-foreground">{item.name}</p>
+              <p className="text-sm text-muted">
                 ${(item.priceCents / 100).toFixed(2)} each
               </p>
             </div>
@@ -51,12 +46,12 @@ export default function CartPage() {
                 onChange={(e) =>
                   setQuantity(item.productId, Number(e.target.value))
                 }
-                className="w-16 rounded-md border border-zinc-300 px-2 py-2 text-center dark:border-zinc-700 dark:bg-zinc-900"
+                className="w-16 rounded-lg border border-border bg-surface-raised px-2 py-2 text-center text-foreground"
               />
               <button
                 type="button"
                 onClick={() => removeItem(item.productId)}
-                className="text-sm text-red-600 dark:text-red-400"
+                className="text-sm text-danger"
               >
                 Remove
               </button>
@@ -65,19 +60,14 @@ export default function CartPage() {
         ))}
       </ul>
 
-      <div className="mt-6 flex items-center justify-between border-t border-zinc-200 pt-4 dark:border-zinc-800">
-        <p className="font-semibold text-zinc-900 dark:text-zinc-50">
-          Total
-        </p>
-        <p className="font-semibold text-zinc-900 dark:text-zinc-50">
+      <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+        <p className="font-semibold text-foreground">Total</p>
+        <p className="font-semibold text-foreground">
           ${(totalCents / 100).toFixed(2)}
         </p>
       </div>
 
-      <Link
-        href="/checkout"
-        className="mt-6 block w-full rounded-md bg-zinc-900 px-4 py-3 text-center text-base font-medium text-white dark:bg-zinc-50 dark:text-zinc-900"
-      >
+      <Link href="/checkout" className={`${btnPrimary} mt-6 block w-full`}>
         Begin Checkout
       </Link>
     </div>

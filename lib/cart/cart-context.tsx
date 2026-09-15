@@ -59,8 +59,10 @@ function getSnapshot(): CartItem[] {
   return cache;
 }
 
+const EMPTY_CART: CartItem[] = [];
+
 function getServerSnapshot(): CartItem[] {
-  return [];
+  return EMPTY_CART;
 }
 
 interface CartContextValue {

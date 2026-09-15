@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { heading } from "@/lib/ui";
 
 // NOTE: campaign slugs are unique per-organization, not globally. With a
 // single organization this is fine; multi-org public storefronts will need
@@ -34,41 +35,33 @@ export default async function CampaignDetailPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-        {campaign.title}
-      </h1>
+      <h1 className={`${heading} text-2xl`}>{campaign.title}</h1>
       {campaign.description && (
-        <p className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-400">
-          {campaign.description}
-        </p>
+        <p className="mt-2 max-w-2xl text-muted">{campaign.description}</p>
       )}
       {campaign.beneficiary_statement && (
-        <p className="mt-2 max-w-2xl text-sm text-zinc-500">
+        <p className="mt-2 max-w-2xl text-sm text-muted">
           {campaign.beneficiary_statement}
         </p>
       )}
 
-      <h2 className="mt-10 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-        Products
-      </h2>
+      <h2 className={`${heading} mt-10 text-lg`}>Products</h2>
       <ul className="mt-4 grid gap-6 sm:grid-cols-2">
         {products?.map((product) => (
           <li key={product.id}>
             <Link
               href={`/products/${product.slug}`}
-              className="block rounded-lg border border-zinc-200 p-5 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600"
+              className="block rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent"
             >
-              <p className="font-medium text-zinc-900 dark:text-zinc-50">
-                {product.name}
-              </p>
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="font-semibold text-foreground">{product.name}</p>
+              <p className="mt-1 text-sm font-medium text-accent">
                 ${(product.price_cents / 100).toFixed(2)}
               </p>
             </Link>
           </li>
         ))}
         {products?.length === 0 && (
-          <li className="text-sm text-zinc-500">
+          <li className="text-sm text-muted">
             No products are live in this campaign yet.
           </li>
         )}

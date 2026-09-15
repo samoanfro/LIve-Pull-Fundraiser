@@ -7,6 +7,7 @@ import {
   confirmDonationBackAction,
   type ShippingAddress,
 } from "./actions";
+import { btnPrimary, btnSecondary, input } from "@/lib/ui";
 
 export interface ShippingRequestInfo {
   status: string;
@@ -54,18 +55,18 @@ export function ShipDonateChoice({
   if (donationBack) {
     return (
       <div>
-        <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        <p className="text-sm font-medium text-foreground">
           You chose to donate these items back. Thank you!
         </p>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-muted">
           Confirmed {new Date(donationBack.confirmedAt).toLocaleDateString()}
         </p>
         {donationBack.dispositionStatus ? (
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted">
             Status: {donationBack.dispositionStatus.replaceAll("_", " ")}
           </p>
         ) : (
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted">
             Awaiting disposition update from our team.
           </p>
         )}
@@ -83,11 +84,11 @@ export function ShipDonateChoice({
     if (!editable) {
       return (
         <div>
-          <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          <p className="text-sm font-medium text-foreground">
             Shipping status: {shippingRequest.status.replaceAll("_", " ")}
           </p>
           {shippingRequest.carrier && (
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-muted">
               {shippingRequest.carrier} {shippingRequest.trackingNumber}
             </p>
           )}
@@ -151,12 +152,12 @@ export function ShipDonateChoice({
   if (mode === "donate") {
     return (
       <div>
-        <label className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+        <label className="flex items-start gap-2 text-sm text-muted">
           <input
             type="checkbox"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
-            className="mt-1"
+            className="mt-1 accent-accent"
           />
           I agree to donate the items shown above back to the nonprofit and
           understand this does not automatically imply a specific tax
@@ -166,7 +167,7 @@ export function ShipDonateChoice({
           <button
             type="button"
             onClick={() => setMode("choose")}
-            className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium dark:border-zinc-700"
+            className={`${btnSecondary} px-4 py-2 text-sm`}
           >
             Back
           </button>
@@ -187,37 +188,33 @@ export function ShipDonateChoice({
                 router.refresh();
               });
             }}
-            className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900"
+            className={`${btnPrimary} px-4 py-2 text-sm`}
           >
             {pending ? "Confirming..." : "Confirm Donation"}
           </button>
         </div>
-        {error && (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-400">
-            {error}
-          </p>
-        )}
+        {error && <p className="mt-2 text-sm text-danger">{error}</p>}
       </div>
     );
   }
 
   return (
     <div>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-sm text-muted">
         This decision applies to the physical items shown above.
       </p>
       <div className="mt-3 flex flex-col gap-2 sm:flex-row">
         <button
           type="button"
           onClick={() => setMode("ship")}
-          className="w-full rounded-md bg-zinc-900 px-4 py-3 text-base font-medium text-white dark:bg-zinc-50 dark:text-zinc-900"
+          className={`${btnPrimary} w-full`}
         >
           Ship My Items
         </button>
         <button
           type="button"
           onClick={() => setMode("donate")}
-          className="w-full rounded-md border border-zinc-300 px-4 py-3 text-base font-medium dark:border-zinc-700"
+          className={`${btnSecondary} w-full`}
         >
           Donate Back
         </button>
@@ -247,32 +244,32 @@ function AddressForm({
         placeholder="Full name"
         value={address.name}
         onChange={(e) => setAddress({ ...address, name: e.target.value })}
-        className="rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
+        className={input}
       />
       <input
         placeholder="Address line 1"
         value={address.line1}
         onChange={(e) => setAddress({ ...address, line1: e.target.value })}
-        className="rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
+        className={input}
       />
       <input
         placeholder="Address line 2 (optional)"
         value={address.line2}
         onChange={(e) => setAddress({ ...address, line2: e.target.value })}
-        className="rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
+        className={input}
       />
       <div className="flex gap-2">
         <input
           placeholder="City"
           value={address.city}
           onChange={(e) => setAddress({ ...address, city: e.target.value })}
-          className="w-1/2 rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
+          className={`${input} w-1/2`}
         />
         <input
           placeholder="State"
           value={address.state}
           onChange={(e) => setAddress({ ...address, state: e.target.value })}
-          className="w-1/4 rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
+          className={`${input} w-1/4`}
         />
         <input
           placeholder="ZIP"
@@ -280,26 +277,24 @@ function AddressForm({
           onChange={(e) =>
             setAddress({ ...address, postalCode: e.target.value })
           }
-          className="w-1/4 rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
+          className={`${input} w-1/4`}
         />
       </div>
       <input
         placeholder="Country"
         value={address.country}
         onChange={(e) => setAddress({ ...address, country: e.target.value })}
-        className="rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
+        className={input}
       />
 
-      {error && (
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-      )}
+      {error && <p className="text-sm text-danger">{error}</p>}
 
       <div className="flex gap-2">
         {onBack && (
           <button
             type="button"
             onClick={onBack}
-            className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium dark:border-zinc-700"
+            className={`${btnSecondary} px-4 py-2 text-sm`}
           >
             Back
           </button>
@@ -308,7 +303,7 @@ function AddressForm({
           type="button"
           onClick={onSubmit}
           disabled={pending}
-          className="flex-1 rounded-md bg-zinc-900 px-4 py-3 text-base font-medium text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900"
+          className={`${btnPrimary} flex-1`}
         >
           {pending ? "Saving..." : "Confirm Shipping Address"}
         </button>

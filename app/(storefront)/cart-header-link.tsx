@@ -9,9 +9,14 @@ export function CartHeaderLink() {
   return (
     <Link
       href="/cart"
-      className="text-sm font-medium text-zinc-700 hover:underline dark:text-zinc-300"
+      className="flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-foreground"
     >
-      Cart{totalQuantity > 0 ? ` (${totalQuantity})` : ""}
+      Cart
+      {totalQuantity > 0 && (
+        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-xs font-bold text-accent-foreground">
+          {totalQuantity}
+        </span>
+      )}
     </Link>
   );
 }

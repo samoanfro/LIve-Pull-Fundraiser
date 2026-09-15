@@ -22,18 +22,23 @@ export default async function AdminLayout({
   const { user, role, organizationName } = context;
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
+    <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-zinc-950">
       <header className="border-b border-zinc-200 px-6 py-4 dark:border-zinc-800">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-zinc-500">
-              {organizationName || "Signed in as"}
-            </p>
-            <p className="font-medium text-zinc-900 dark:text-zinc-50">
-              {user.email}
-            </p>
+          <div className="flex items-center gap-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#f5b700] text-sm font-bold text-[#1a1300]">
+              LP
+            </span>
+            <div>
+              <p className="text-sm text-zinc-500">
+                {organizationName || "Signed in as"}
+              </p>
+              <p className="font-medium text-zinc-900 dark:text-zinc-50">
+                {user.email}
+              </p>
+            </div>
           </div>
-          <span className="rounded-full bg-zinc-900 px-3 py-1 text-xs font-medium text-white dark:bg-zinc-50 dark:text-zinc-900">
+          <span className="rounded-full bg-[#f5b700] px-3 py-1 text-xs font-semibold text-[#1a1300]">
             {role}
           </span>
         </div>
@@ -42,25 +47,25 @@ export default async function AdminLayout({
             <>
               <Link
                 href="/admin/campaigns"
-                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+                className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
               >
                 Campaigns
               </Link>
               <Link
                 href="/admin/products"
-                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+                className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
               >
                 Products
               </Link>
               <Link
                 href="/admin/storage-locations"
-                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+                className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
               >
                 Storage Locations
               </Link>
               <Link
                 href="/admin/inventory/receive"
-                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+                className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
               >
                 Receive Inventory
               </Link>
@@ -69,7 +74,7 @@ export default async function AdminLayout({
           {canManageOpeningQueue(role) && (
             <Link
               href="/admin/opening-sessions"
-              className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
             >
               Opening Sessions
             </Link>
@@ -77,7 +82,7 @@ export default async function AdminLayout({
           {canManageShipping(role) && (
             <Link
               href="/admin/shipping"
-              className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+              className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
             >
               Shipping
             </Link>
@@ -86,25 +91,25 @@ export default async function AdminLayout({
             <>
               <Link
                 href="/admin/donations"
-                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+                className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
               >
                 Donations
               </Link>
               <Link
                 href="/admin/orders"
-                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+                className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
               >
                 Orders
               </Link>
               <Link
                 href="/admin/audit-log"
-                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+                className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
               >
                 Audit History
               </Link>
               <Link
                 href="/admin/reports"
-                className="text-zinc-700 underline-offset-2 hover:underline dark:text-zinc-300"
+                className="text-zinc-700 underline-offset-2 hover:text-[#b8860b] hover:underline dark:text-zinc-300"
               >
                 Reports
               </Link>

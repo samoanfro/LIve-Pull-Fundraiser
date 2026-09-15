@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart/cart-context";
+import { btnPrimary, btnSecondary } from "@/lib/ui";
 
 export function AddToCart({
   productId,
@@ -26,7 +27,7 @@ export function AddToCart({
       <button
         type="button"
         disabled
-        className="w-full rounded-md bg-zinc-300 px-4 py-3 text-base font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+        className="w-full rounded-lg border border-border bg-surface px-4 py-3 text-base font-medium text-muted"
       >
         Sold Out
       </button>
@@ -41,7 +42,7 @@ export function AddToCart({
           addItem({ productId, organizationId, name, priceCents });
           setAdded(true);
         }}
-        className="w-full rounded-md bg-zinc-900 px-4 py-3 text-base font-medium text-white dark:bg-zinc-50 dark:text-zinc-900"
+        className={`${btnPrimary} w-full`}
       >
         Add to Cart
       </button>
@@ -49,7 +50,7 @@ export function AddToCart({
         <button
           type="button"
           onClick={() => router.push("/cart")}
-          className="w-full rounded-md border border-zinc-300 px-4 py-3 text-base font-medium dark:border-zinc-700"
+          className={`${btnSecondary} w-full`}
         >
           Added — View Cart
         </button>
