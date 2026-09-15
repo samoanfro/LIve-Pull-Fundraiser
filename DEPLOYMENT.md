@@ -5,8 +5,10 @@ Tracks what's needed to take this app from local development to a real productio
 ## Hosting
 
 - [x] Vercel project created (`l-ive-pull-fundraiser`), linked to `samoanfro/LIve-Pull-Fundraiser` on GitHub.
-- [ ] First successful production deployment.
-- [ ] Custom domain `socialhealthmarketplace.com` connected (see "Custom Domain" below).
+- [x] First successful production deployment.
+- [x] Custom domain `socialhealthmarketplace.com` connected and verified (apex `A` record to `216.198.79.1`, `www` `CNAME` to the per-domain Vercel target) — confirmed live in-browser, storefront correctly renders real campaign data from Supabase, `/admin` correctly redirects unauthenticated visitors.
+- [ ] Set `NEXT_PUBLIC_APP_URL=https://socialhealthmarketplace.com` in Vercel and redeploy (still needed — see below).
+- [ ] Add the production domain to Supabase Auth's allowed redirect URLs (still needed — see below).
 
 ## Environment Variables (Vercel → Project → Settings → Environment Variables)
 
