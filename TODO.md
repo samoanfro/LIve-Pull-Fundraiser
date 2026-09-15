@@ -2,9 +2,12 @@
 
 Living list of open items across phases. Updated as each phase completes. Check items off as you address them — I'll keep adding to this rather than losing items in chat history.
 
-## ⚠️ Needs your action before Stripe sign-up
+## Payment decision (2026-09-15)
 
-- [ ] **Review payment portal options before signing up for Stripe.** You asked to be reminded of this once Phase 6 is done — don't create the Stripe account until you've compared alternatives (fees, payout timing, dispute handling, nonprofit-specific terms) and confirmed Stripe is the right fit for a nonprofit fundraising use case.
+- [x] **Payment portal review complete.** You've decided: Stripe for standard checkout, plus ACH (bank transfer) offered as an option for larger-ticket items — you chose to always offer both card and ACH on every checkout rather than gating ACH by order size.
+- Checkout and the webhook handler are now updated to support ACH (`app/(storefront)/checkout/actions.ts`, `app/api/stripe/webhook/route.ts`), plus a new migration (`20260922000000_phase9_ach_pending_payments.sql`) adding a `processing` payment status and an `extend_order_reservations()` function. ACH settles over several business days instead of instantly, so a pack's inventory reservation is now extended to 14 days while an ACH payment is in flight, instead of releasing after the normal 15-minute checkout-page hold — otherwise the same box could get resold to someone else while the first buyer's bank transfer was still clearing.
+- [ ] **Still needed from you:** create the real Stripe account and provide `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`. None of the ACH code above has been tested against a live Stripe account yet — only verified via typecheck/lint/unit/e2e and direct review of Stripe's documented event flow.
+- [ ] **ACH (`us_bank_account`) must also be turned on in the Stripe Dashboard itself** once the account exists — this is an account-level setting/business verification step on Stripe's side, not something set in code.
 
 ## Compliance decisions needing your (and likely legal) input
 
@@ -17,7 +20,7 @@ Living list of open items across phases. Updated as each phase completes. Check 
 
 ## Blocking / needs your input
 
-- [ ] Create a real Stripe account (test mode) and provide `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` — Phase 4 (Checkout/reservations) is built and verified at the database level but not yet live-tested end-to-end.
+- [ ] Create a real Stripe account (test mode) and provide `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` — see "Payment decision" section above for the ACH-specific follow-up once this exists. Phase 4 (Checkout/reservations) is built and verified at the database level but not yet live-tested end-to-end.
 - [ ] For local Stripe webhook testing you'll need either the Stripe CLI (`stripe listen --forward-to localhost:3000/api/stripe/webhook`) or a deployed environment — plan which before testing Phase 4 live.
 - [x] Set `git config --global user.name` / `user.email` to your real identity — done (`samoanfro` / `fred.siaosi@gmail.com`, matching your GitHub account). This was actually blocking Vercel deployment (it rejects commits whose author email isn't a verified GitHub email), not just cosmetic.
 - [ ] When ready for real transactional email, create a Resend account and provide `EMAIL_PROVIDER_API_KEY` / `EMAIL_FROM_ADDRESS`.

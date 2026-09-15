@@ -205,6 +205,7 @@ export async function createCheckoutSessionAction(
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
+    payment_method_types: ["card", "us_bank_account"],
     line_items: lineItems,
     customer_email: guestEmail,
     success_url: `${appUrl}/checkout/success?order_id=${order.id}&token=${guestAccessToken}`,
