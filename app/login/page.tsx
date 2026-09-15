@@ -45,7 +45,7 @@ export default function LoginPage() {
         </p>
 
         {status === "sent" ? (
-          <p className="mt-6 rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm text-success">
+          <p className="mt-6 rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm text-foreground">
             Check your email for a sign-in link.
           </p>
         ) : (

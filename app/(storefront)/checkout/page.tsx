@@ -19,7 +19,7 @@ export default function CheckoutPage() {
         <h1 className={`${heading} text-2xl`}>Checkout</h1>
         <p className="mt-4 text-muted">
           Your cart is empty.{" "}
-          <Link href="/campaigns" className="text-accent hover:underline">
+          <Link href="/campaigns" className="text-accent-text hover:underline">
             Browse campaigns
           </Link>
           .

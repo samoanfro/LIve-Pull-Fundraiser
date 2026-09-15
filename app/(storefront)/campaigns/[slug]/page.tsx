@@ -54,7 +54,7 @@ export default async function CampaignDetailPage({
               className="block rounded-xl border border-border bg-surface p-5 transition-colors hover:border-accent"
             >
               <p className="font-semibold text-foreground">{product.name}</p>
-              <p className="mt-1 text-sm font-medium text-accent">
+              <p className="mt-1 text-sm font-medium text-accent-text">
                 ${(product.price_cents / 100).toFixed(2)}
               </p>
             </Link>

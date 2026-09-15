@@ -13,7 +13,7 @@ export default function CartPage() {
         <h1 className={`${heading} text-2xl`}>Your Cart</h1>
         <p className="mt-4 text-muted">
           Your cart is empty.{" "}
-          <Link href="/campaigns" className="text-accent hover:underline">
+          <Link href="/campaigns" className="text-accent-text hover:underline">
             Browse campaigns
           </Link>
           .

@@ -34,12 +34,12 @@ export default async function ProductDetailPage({
   return (
     <div className="mx-auto max-w-2xl">
       {!soldOut && (
-        <span className="inline-block rounded-full bg-accent/15 px-3 py-1 text-xs font-semibold tracking-wide text-accent uppercase">
+        <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-semibold tracking-wide text-accent-foreground uppercase">
           In Stock
         </span>
       )}
       <h1 className={`${heading} mt-2 text-3xl`}>{product.name}</h1>
-      <p className="mt-2 text-2xl font-bold text-accent">
+      <p className="mt-2 text-2xl font-bold text-accent-text">
         ${(product.price_cents / 100).toFixed(2)}
       </p>
 

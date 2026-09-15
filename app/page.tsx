@@ -8,11 +8,11 @@ export default function Home() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(60% 50% at 50% 0%, rgba(245,183,0,0.16) 0%, rgba(11,11,15,0) 70%)",
+            "radial-gradient(60% 50% at 50% 0%, rgba(234,148,44,0.14) 0%, rgba(253,253,253,0) 70%)",
         }}
       />
       <div className="relative">
-        <p className="text-sm font-semibold tracking-widest text-accent uppercase">
+        <p className="text-sm font-semibold tracking-widest text-brand uppercase">
           Live Pull Fundraising
         </p>
         <h1 className="mt-3 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
