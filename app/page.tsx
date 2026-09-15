@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { btnPrimary } from "@/lib/ui";
+import { HeroArt } from "./hero-art";
 
 export default function Home() {
   return (
@@ -11,7 +12,21 @@ export default function Home() {
             "radial-gradient(60% 50% at 50% 0%, rgba(234,148,44,0.14) 0%, rgba(253,253,253,0) 70%)",
         }}
       />
-      <div className="relative">
+
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-64 sm:h-80"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 55%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, black 55%, transparent 100%)",
+        }}
+      >
+        <div className="mx-auto h-full max-w-2xl opacity-80">
+          <HeroArt />
+        </div>
+      </div>
+
+      <div className="relative mt-32 sm:mt-40">
         <p className="text-sm font-semibold tracking-widest text-brand uppercase">
           Live Pull Fundraising
         </p>
