@@ -41,6 +41,7 @@ Living list of open items across phases. Updated as each phase completes. Check 
 - Reports page has no date-range filtering (all-time only) and no per-campaign breakdown — org-wide totals only for now.
 - "Estimated Net Funds Raised" on the Reports page does not subtract payment processing fees or shipping cost (neither is tracked yet) — it's explicitly labeled as an estimate, but don't treat it as a precise number for financial reporting.
 - Reports page was verified by cross-checking every figure against hand-written SQL run directly on the live database (all matched), but the actual rendered UI has not been visually verified in a browser — the sandbox's external-domain policy blocks completing a real Supabase magic-link sign-in here, so no admin page has had a true live-authenticated visual check since Phase 3. Worth you doing a quick manual click-through when you get a chance.
+- New dark/amber design system applied to the full customer-facing storefront and login page. Admin pages only got a light branding touch (logo mark, accent nav color) — the actual admin page bodies (tables, forms) are still the plain default styling. A full admin design pass is not done; let me know if you want that too.
 
 ## Deferred by design (per PRODUCT_BUILD_SPEC.md)
 
