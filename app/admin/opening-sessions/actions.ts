@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { getCurrentOrgContext } from "@/lib/auth/current-org";
 import { isAdminRole, canManageOpeningQueue } from "@/lib/permissions/roles";
 import { isSupportedYouTubeUrl } from "@/lib/youtube";
+import { isLiveHostKey } from "@/lib/live-hosts";
 
 export interface ActionState {
   error?: string;
@@ -20,6 +21,10 @@ export async function createOpeningSessionAction(
   }
 
   const livestreamUrl = String(formData.get("livestream_url") ?? "").trim();
+  const hostKey = String(formData.get("host_key") ?? "");
+  if (!isLiveHostKey(hostKey)) {
+    return { error: "Choose a valid stream host." };
+  }
   if (livestreamUrl && !isSupportedYouTubeUrl(livestreamUrl)) {
     return { error: "Enter a valid YouTube video, live, or channel URL." };
   }
@@ -27,6 +32,7 @@ export async function createOpeningSessionAction(
   const { error } = await context.supabase.from("opening_sessions").insert({
     organization_id: context.organizationId,
     livestream_url: livestreamUrl || null,
+    host_key: hostKey,
   });
 
   if (error) {

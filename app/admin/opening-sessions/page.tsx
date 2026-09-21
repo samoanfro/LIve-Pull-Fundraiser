@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCurrentOrgContext } from "@/lib/auth/current-org";
 import { SessionForm } from "./session-form";
+import { LIVE_HOSTS } from "@/lib/live-hosts";
 
 export default async function OpeningSessionsPage() {
   const context = await getCurrentOrgContext();
@@ -8,7 +9,7 @@ export default async function OpeningSessionsPage() {
 
   const { data: sessions } = await context.supabase
     .from("opening_sessions")
-    .select("id, status, created_at")
+    .select("id, status, host_key, created_at")
     .order("created_at", { ascending: false });
 
   return (
@@ -30,7 +31,9 @@ export default async function OpeningSessionsPage() {
             >
               Session {session.id.slice(0, 8)}
             </Link>
-            <p className="text-sm text-zinc-500">{session.status}</p>
+            <p className="text-sm text-zinc-500">
+              {LIVE_HOSTS.find((host) => host.key === session.host_key)?.name ?? "Live Pull"} · {session.status}
+            </p>
           </li>
         ))}
         {sessions?.length === 0 && (

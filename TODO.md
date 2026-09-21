@@ -20,6 +20,7 @@ Living list of open items across phases. Updated as each phase completes. Check 
 
 ## Blocking / needs your input
 
+- [ ] **Guest streamer setup:** get permission and the specific YouTube live video URL for PokePigLT and Beard Dad Cardz before scheduling their opening sessions. The Live page now offers all three hosts and shows one feed at a time; channel handles alone are not embeddable by the current URL validator.
 - [ ] Create a real Stripe account (test mode) and provide `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET` — see "Payment decision" section above for the ACH-specific follow-up once this exists. Phase 4 (Checkout/reservations) is built and verified at the database level but not yet live-tested end-to-end.
 - [ ] For local Stripe webhook testing you'll need either the Stripe CLI (`stripe listen --forward-to localhost:3000/api/stripe/webhook`) or a deployed environment — plan which before testing Phase 4 live.
 - [x] Set `git config --global user.name` / `user.email` to your real identity — done (`samoanfro` / `fred.siaosi@gmail.com`, matching your GitHub account). This was actually blocking Vercel deployment (it rejects commits whose author email isn't a verified GitHub email), not just cosmetic.

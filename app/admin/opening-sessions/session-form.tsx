@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { createOpeningSessionAction, type ActionState } from "./actions";
+import { LIVE_HOSTS } from "@/lib/live-hosts";
 
 const initialState: ActionState = {};
 
@@ -13,6 +14,16 @@ export function SessionForm() {
 
   return (
     <form action={formAction} className="flex max-w-md flex-col gap-3">
+      <label className="text-sm font-medium" htmlFor="host_key">Stream host</label>
+      <select
+        id="host_key"
+        name="host_key"
+        className="rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
+      >
+        {LIVE_HOSTS.map((host) => (
+          <option key={host.key} value={host.key}>{host.name}</option>
+        ))}
+      </select>
       <input
         name="livestream_url"
         type="url"
