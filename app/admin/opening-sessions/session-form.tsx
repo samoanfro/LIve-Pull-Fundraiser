@@ -15,7 +15,9 @@ export function SessionForm() {
     <form action={formAction} className="flex max-w-md flex-col gap-3">
       <input
         name="livestream_url"
-        placeholder="Livestream URL (optional)"
+        type="url"
+        inputMode="url"
+        placeholder="YouTube live URL (optional)"
         className="rounded-md border border-zinc-300 px-3 py-3 text-base dark:border-zinc-700 dark:bg-zinc-900"
       />
       <button

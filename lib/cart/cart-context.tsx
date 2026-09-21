@@ -18,12 +18,38 @@ export interface CartItem {
 }
 
 const STORAGE_KEY = "lpfp_cart_v1";
+export const MAX_CART_QUANTITY = 99;
 const listeners = new Set<() => void>();
+
+function normalizeQuantity(quantity: number): number {
+  if (!Number.isFinite(quantity)) return 1;
+  return Math.min(MAX_CART_QUANTITY, Math.max(1, Math.floor(quantity)));
+}
+
+function isCartItem(value: unknown): value is CartItem {
+  if (!value || typeof value !== "object") return false;
+  const item = value as Partial<CartItem>;
+  return (
+    typeof item.productId === "string" &&
+    typeof item.organizationId === "string" &&
+    typeof item.name === "string" &&
+    typeof item.priceCents === "number" &&
+    Number.isInteger(item.priceCents) &&
+    item.priceCents >= 0 &&
+    typeof item.quantity === "number" &&
+    Number.isFinite(item.quantity)
+  );
+}
 
 function readFromStorage(): CartItem[] {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const parsed: unknown = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(isCartItem).map((item) => ({
+      ...item,
+      quantity: normalizeQuantity(item.quantity),
+    }));
   } catch {
     return [];
   }
@@ -82,14 +108,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addItem = useCallback(
     (item: Omit<CartItem, "quantity">, quantity = 1) => {
+      const safeQuantity = normalizeQuantity(quantity);
       const existing = cache.find((i) => i.productId === item.productId);
       const next = existing
         ? cache.map((i) =>
             i.productId === item.productId
-              ? { ...i, quantity: i.quantity + quantity }
+              ? { ...i, quantity: normalizeQuantity(i.quantity + safeQuantity) }
               : i,
           )
-        : [...cache, { ...item, quantity }];
+        : [...cache, { ...item, quantity: safeQuantity }];
       persist(next);
     },
     [],
@@ -100,12 +127,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setQuantity = useCallback((productId: string, quantity: number) => {
-    const next =
-      quantity <= 0
-        ? cache.filter((i) => i.productId !== productId)
-        : cache.map((i) =>
-            i.productId === productId ? { ...i, quantity } : i,
-          );
+    if (!Number.isFinite(quantity)) return;
+    const next = cache.map((i) =>
+      i.productId === productId
+        ? { ...i, quantity: normalizeQuantity(quantity) }
+        : i,
+    );
     persist(next);
   }, []);
 

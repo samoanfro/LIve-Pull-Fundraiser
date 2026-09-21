@@ -48,6 +48,35 @@ body {
   color: var(--foreground);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.hero-wash {
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.98) 8%, rgba(255, 255, 255, 0.7) 52%, rgba(243, 246, 247, 0.4) 100%),
+    radial-gradient(circle at 82% 24%, rgba(47, 169, 182, 0.2), transparent 34%),
+    radial-gradient(circle at 72% 78%, rgba(234, 148, 44, 0.17), transparent 30%);
+}
+
+.product-visual {
+  background:
+    linear-gradient(145deg, #0a5572 0%, #14758c 52%, #2fa9b6 100%);
+}
+
+.product-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 ::selection {
   background: var(--accent);
   color: var(--accent-foreground);

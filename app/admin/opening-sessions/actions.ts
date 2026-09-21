@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getCurrentOrgContext } from "@/lib/auth/current-org";
 import { isAdminRole, canManageOpeningQueue } from "@/lib/permissions/roles";
+import { isSupportedYouTubeUrl } from "@/lib/youtube";
 
 export interface ActionState {
   error?: string;
@@ -18,9 +19,14 @@ export async function createOpeningSessionAction(
     return { error: "Not authorized." };
   }
 
+  const livestreamUrl = String(formData.get("livestream_url") ?? "").trim();
+  if (livestreamUrl && !isSupportedYouTubeUrl(livestreamUrl)) {
+    return { error: "Enter a valid YouTube video, live, or channel URL." };
+  }
+
   const { error } = await context.supabase.from("opening_sessions").insert({
     organization_id: context.organizationId,
-    livestream_url: String(formData.get("livestream_url") ?? "") || null,
+    livestream_url: livestreamUrl || null,
   });
 
   if (error) {
